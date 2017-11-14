@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/black"
+    tools:context="br.edu.ifspsaocarlos.sdm.trabalho.CronometroActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="12">
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00:00:00:000"
+            android:layout_gravity="center_horizontal"
+            android:textSize="50dp"
+            android:textColor="@color/verde"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="15">
+
+        <ScrollView
+            android:id="@+id/sv_listar_lap"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/et_listar_laps"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text=""/>
+        </ScrollView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_marginBottom="100dp"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="126dp"
+            android:layout_height="100dp"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/btn_lap"
+            android:layout_width="126dp"
+            android:layout_height="100dp"
+            android:text="Lap" />
+
+        <Button
+            android:id="@+id/btn_stop"
+            android:layout_width="126dp"
+            android:layout_height="100dp"
+            android:text="Stop" />
+
+    </LinearLayout>
+
+</LinearLayout>

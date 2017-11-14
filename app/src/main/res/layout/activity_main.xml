@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="br.edu.ifspsaocarlos.sdm.trabalho.MainActivity">
+
+    <Button
+        android:id="@+id/btn_cronometro"
+        android:layout_width="143dp"
+        android:layout_height="89dp"
+        android:background="@mipmap/icone_cronometro"
+        android:padding="4dp"/>
+
+    <Button
+        android:id="@+id/btn_xadrez"
+        android:layout_width="143dp"
+        android:layout_height="89dp"
+        android:background="@mipmap/xadrez"
+        android:padding="4dp"/>
+
+</LinearLayout>
