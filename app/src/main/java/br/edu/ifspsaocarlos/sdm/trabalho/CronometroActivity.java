@@ -1,5 +1,13 @@
 package br.edu.ifspsaocarlos.sdm.trabalho;
+/*
 
+Vídeo no Youtube
+https://www.youtube.com/watch?v=5RVzknsdknw
+
+Código no Github
+https://github.com/EMBEDONIX/AndroidChronometer
+
+ */
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +46,8 @@ public class CronometroActivity extends AppCompatActivity implements View.OnClic
         et_listar_laps = (EditText) findViewById(R.id.et_listar_laps);
         sv_listar_lap = (ScrollView) findViewById(R.id.sv_listar_lap) ;
 
+        et_listar_laps.setEnabled(false);
+
         btn_start.setOnClickListener(this);
         btn_lap.setOnClickListener(this);
         btn_stop.setOnClickListener(this);
@@ -54,17 +64,19 @@ public class CronometroActivity extends AppCompatActivity implements View.OnClic
                     threadCronometro.start();
                     cronometro.start();
 
-                    laps = 1;
                     et_listar_laps.setText("");
+                    laps = 1;
                 }
 
                 break;
             case R.id.btn_lap:
 
                 if(cronometro==null){
+
                     return;
                 }
-                et_listar_laps.append("LAP "+ String.valueOf(laps) + " " + String.valueOf(tv_time) + " \n");
+                et_listar_laps.append("LAP "+ String.valueOf(laps++) + " " + String.valueOf(tv_time.getText()) + " \n");
+
 
                 sv_listar_lap.post(new Runnable() {
                     @Override

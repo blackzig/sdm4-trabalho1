@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".XadrezActivity" />
-        <activity android:name=".CronometroActivity"></activity>
+        <activity android:name=".CronometroActivity" />
+        <activity android:name=".configuracoes.XadrezConfiguracoesActivity"></activity>
     </application>
 
 </manifest>
