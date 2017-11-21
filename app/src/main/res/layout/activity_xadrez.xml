@@ -9,26 +9,64 @@
     android:padding="10dp"
     tools:context="br.edu.ifspsaocarlos.sdm.trabalho.XadrezActivity">
 
-
-    <Chronometer
-        android:id="@+id/chronometer_player1"
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/white"
-        android:textSize="100dp"
-        android:rotation="90"
-        android:layout_weight="1"/>
+        android:layout_height="300dp"
+        android:background="#3697dc"
+        android:orientation="horizontal">
 
+        <Chronometer
+            android:id="@+id/chronometer_player1"
+            android:layout_width="650dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:rotation="90"
+            android:textColor="@color/white"
+            android:textSize="100dp" />
 
-    <Chronometer
-        android:id="@+id/chronometer_player2"
+        <Chronometer
+            android:id="@+id/chronometer_player1_litle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:rotation="90"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="100dp"
-        android:rotation="90"
-        android:layout_weight="1"/>
+        android:layout_height="300dp"
+        android:background="#3697dc"
+        android:orientation="horizontal" >
+
+        <Chronometer
+            android:id="@+id/chronometer_player2"
+            android:layout_width="650dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:rotation="90"
+            android:textColor="@color/black"
+            android:textSize="100dp" />
+
+        <Chronometer
+            android:id="@+id/chronometer_player2_litle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:rotation="90"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
 
 </LinearLayout>

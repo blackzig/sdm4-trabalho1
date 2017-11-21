@@ -1,6 +1,8 @@
 package br.edu.ifspsaocarlos.sdm.trabalho;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,15 +12,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.Toast;
 
 import br.edu.ifspsaocarlos.sdm.trabalho.configuracoes.XadrezConfiguracoesActivity;
 
 public class XadrezActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Chronometer ch1, ch2;
+    private Chronometer ch1, ch2, ch1Litle, ch2Litle;
 
     private long millisegundos_ch1, millisegundos_ch2;
     private int firstTime = 0;
+    private int bonusTimeInt = 0;
+    private long bonusNotFinish = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +35,48 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
 
         ch2 = (Chronometer) findViewById(R.id.chronometer_player2);
         ch2.setOnClickListener(this);
+
+        ch2Litle = (Chronometer) findViewById(R.id.chronometer_player2_litle);
+        ch2Litle.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
+
+            @Override
+            public void onChronometerTick(Chronometer chronometer) {
+                if( chronometer.getText().toString().equalsIgnoreCase("00:00")) {
+                    Log.i("onch","onchr");
+                    ch2Litle.stop();
+                    player1PressChronometer();
+                }
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.chronometer_player1:
-                player1PressChronometer();
+                haBonusTime();
+                bonusTime();
                 break;
             case R.id.chronometer_player2:
                 player2PressChronometer();
                 break;
             default:
+        }
+    }
+
+    public void haBonusTime(){
+        SharedPreferences prefs = this.getSharedPreferences("XadrezConfiguracoes", Context.MODE_PRIVATE);
+        String bonusTime = prefs.getString("bonus_segundos", null);
+        bonusTimeInt = Integer.parseInt(bonusTime);
+    }
+
+    public void bonusTime(){
+        if(bonusTimeInt!=0){
+            ch2Litle.setVisibility(View.VISIBLE);
+            ch2Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
+            ch2Litle.start();
+        }else{
+            ch2Litle.setVisibility(View.INVISIBLE);
         }
     }
 
