@@ -24,6 +24,7 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
     private int firstTimeLitleChronometer1 = 0;
     private int firstTimeLitleChronometer2 = 0;
     private int bonusTimeInt = 0;
+    private int pressChronometer = 0;
     private String setTimeLitleChronometer1 = "00:01";
     private String setTimeLitleChronometer2 = "00:01";
 
@@ -97,7 +98,6 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
         setTimeLitleChronometer1 = "00:01";
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -128,6 +128,29 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             ch2Litle.start();
         }else{
             ch2Litle.setVisibility(View.INVISIBLE);
+            ch1.stop();
+
+            if(pressChronometer==0){
+                ch1.setBase(SystemClock.elapsedRealtime());
+                ch2.setBase(SystemClock.elapsedRealtime());
+                pressChronometer = 1;
+            }else if(pressChronometer==1){
+                ch2.setBase(SystemClock.elapsedRealtime());
+                millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
+                Log.i("(1)millisegundos_ch1 ", String.valueOf(millisegundos_ch1));
+                ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
+
+               // millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
+               // ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
+                pressChronometer = 2;
+            }else if(pressChronometer == 2){
+                //tem que arrumar essa bagunça....
+                Log.i("millisegundos_ch1 ", String.valueOf(millisegundos_ch1));
+                millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
+                ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
+            }
+            ch2.start();
+            //firstTimeLitleChronometer2 = 1;
         }
     }
 
@@ -140,19 +163,46 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             ch1Litle.start();
         }else{
             ch1Litle.setVisibility(View.INVISIBLE);
+            ch2.stop();
+
+            if(pressChronometer==0){
+                ch2.setBase(SystemClock.elapsedRealtime());
+                ch1.setBase(SystemClock.elapsedRealtime());
+                pressChronometer = 1;
+            }else if(pressChronometer==1){
+                ch1.setBase(SystemClock.elapsedRealtime());
+                millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
+                Log.i("(1)millisegundos_ch2 ", String.valueOf(millisegundos_ch2));
+                ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
+
+            //    millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
+            //    ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
+
+                pressChronometer=2;
+            }else if(pressChronometer == 2){
+                Log.i("millisegundos_ch2 ", String.valueOf(millisegundos_ch2));
+                millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
+                ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
+            }
+            ch1.start();
+            //firstTimeLitleChronometer1 = 1;
         }
     }
 
     public void stopChronometer1(){
-        stopLilteChronometer1();
-        ch1.stop();
-        firstTimeLitleChronometer2 = 2;
+        if(bonusTimeInt!=0){
+            stopLilteChronometer1();
+            ch1.stop();
+            firstTimeLitleChronometer2 = 2;
+        }
     }
 
     public void stopChronometer2(){
-        stopLilteChronometer2();
-        ch2.stop();
-        firstTimeLitleChronometer1 = 2;
+        if(bonusTimeInt!=0){
+            stopLilteChronometer2();
+            ch2.stop();
+            firstTimeLitleChronometer1 = 2;
+        }
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
