@@ -20,13 +20,10 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
 
     private Chronometer ch1, ch2, ch1Litle, ch2Litle;
 
-    private long millisegundos_ch1, millisegundos_ch2, litle_millisegundos_ch1, litle_millisegundos_ch2;
-   // private int firstTime = 0;
+    private long millisegundos_ch1=0, millisegundos_ch2=0;
     private int firstTimeLitleChronometer1 = 0;
     private int firstTimeLitleChronometer2 = 0;
     private int bonusTimeInt = 0;
-    private int usedTimeBonusChronometer1 = 0;
-    private int usedTimeBonusChronometer2 = 0;
     private String setTimeLitleChronometer1 = "00:01";
     private String setTimeLitleChronometer2 = "00:01";
 
@@ -34,6 +31,8 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xadrez);
+
+        haBonusTime();
 
         ch1 = (Chronometer) findViewById(R.id.chronometer_player1);
         ch1.setOnClickListener(this);
@@ -47,15 +46,17 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             public void onChronometerTick(Chronometer chronometer) {
                 if( chronometer.getText().toString().equalsIgnoreCase(setTimeLitleChronometer2)) {
                     ch2Litle.stop();
-                    Log.i("usedTimeBonusChro2 C2: ", String.valueOf(usedTimeBonusChronometer2));
-                    if(usedTimeBonusChronometer2==1){
+
+                    if(firstTimeLitleChronometer2==0){
+                        ch2.setBase(SystemClock.elapsedRealtime());
+                    }else if(firstTimeLitleChronometer2==1){
+                        millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
                         ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
-                        ch2.start();
-                       // firstTime--;
-                    }else{
-                      //  player1PressChronometer();
-                        //firstTime++;
+                    }else if(firstTimeLitleChronometer2 == 2){
+                        ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
                     }
+                    ch2.start();
+                    firstTimeLitleChronometer2 = 1;
                 }
                 setTimeLitleChronometer2 = "00:00";
             }
@@ -67,34 +68,45 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             public void onChronometerTick(Chronometer chronometer) {
                 if( chronometer.getText().toString().equalsIgnoreCase(setTimeLitleChronometer1)) {
                     ch1Litle.stop();
-                    Log.i("usedTimeBonusChro1 C1: ", String.valueOf(usedTimeBonusChronometer1));
-                    if(usedTimeBonusChronometer1==1){
+
+                    if(firstTimeLitleChronometer1==0){
+                        ch1.setBase(SystemClock.elapsedRealtime());
+                    }else if(firstTimeLitleChronometer1==1){
+                        millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
                         ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
-                        ch1.start();
-                        //firstTime--;
-                    }else{
-                        //player2PressChronometer();
-                       // firstTime++;
+                    }else if(firstTimeLitleChronometer1 == 2){
+                        ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
                     }
+                    ch1.start();
+                    firstTimeLitleChronometer1 = 1;
                 }
                 setTimeLitleChronometer1 = "00:00";
             }
         });
     }
 
+    public void stopLilteChronometer2(){
+        ch2Litle.stop();
+        ch2Litle.setBase(SystemClock.elapsedRealtime());
+        setTimeLitleChronometer2 = "00:01";
+    }
+
+    public void stopLilteChronometer1(){
+        ch1Litle.stop();
+        ch1Litle.setBase(SystemClock.elapsedRealtime());
+        setTimeLitleChronometer1 = "00:01";
+    }
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.chronometer_player1:
-                //Log.i("firstTime C1: ", String.valueOf(firstTime));
                 stopChronometer1();
-                haBonusTime();
                 bonusTimeLitleChronometer2();
                 break;
             case R.id.chronometer_player2:
-              //  Log.i("firstTime C2: ", String.valueOf(firstTime));
                 stopChronometer2();
-                haBonusTime();
                 bonusTimeLitleChronometer1();
                 break;
             default:
@@ -110,105 +122,37 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
     public void bonusTimeLitleChronometer2(){
         ch1.setEnabled(false);
         ch2.setEnabled(true);
-        if(usedTimeBonusChronometer2 == 1){
-            //aqui vai....
+        if(bonusTimeInt!=0){
+            ch2Litle.setVisibility(View.VISIBLE);
+            ch2Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
+            ch2Litle.start();
         }else{
-          //  firstTime++;
-            if(bonusTimeInt!=0){
-                ch2Litle.setVisibility(View.VISIBLE);
-                ch2Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
-                ch2Litle.start();
-            }else{
-                ch2Litle.setVisibility(View.INVISIBLE);
-            }
+            ch2Litle.setVisibility(View.INVISIBLE);
         }
     }
 
     public void bonusTimeLitleChronometer1(){
         ch1.setEnabled(true);
         ch2.setEnabled(false);
-        Log.i("usedTimeBonusChronome1",String.valueOf(usedTimeBonusChronometer1));
-        if(usedTimeBonusChronometer1 == 1){
-            //ch2Litle.start();
+        if(bonusTimeInt!=0){
+            ch1Litle.setVisibility(View.VISIBLE);
+            ch1Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
+            ch1Litle.start();
         }else{
-            //firstTime++;
-            if(bonusTimeInt!=0){
-                ch1Litle.setVisibility(View.VISIBLE);
-                ch1Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
-                ch1Litle.start();
-            }else{
-                ch1Litle.setVisibility(View.INVISIBLE);
-            }
+            ch1Litle.setVisibility(View.INVISIBLE);
         }
     }
 
-    /*
-    public void player1PressChronometer(){
-        Log.i("player1Press ", String.valueOf(firstTime));
-        if(firstTime==0){
-            millisegundos_ch2 = 0;
-            ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
-            ch2.start();
-//            firstTime++;
-        }else if(firstTime==1) {
-            ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
-            ch2.start();
-  //          firstTime++;
-        }else{
-          //  firstTime=2;
-        }
-    }
-
-    public void player2PressChronometer(){
-        Log.i("player2Press ", String.valueOf(firstTime));
-        if(firstTime==0){
-            millisegundos_ch1 = 0;
-            ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
-            ch1.start();
-    //        firstTime++;
-        }else if(firstTime==1) {
-            ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
-            ch1.start();
-      //      firstTime++;
-        }else{
-        //    firstTime=2;
-        }
-    }
-*/
     public void stopChronometer1(){
-        millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
+        stopLilteChronometer1();
         ch1.stop();
-
-        if(firstTimeLitleChronometer1>0){
-            litle_millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1Litle.getBase();
-        }
-        firstTimeLitleChronometer1 = 1;
-
-        if(litle_millisegundos_ch1<=0){
-            ch1Litle.stop();
-            ch1Litle.setBase(SystemClock.elapsedRealtime());
-            usedTimeBonusChronometer1 = 0;
-        }else{
-            usedTimeBonusChronometer1 = 1;
-        }
+        firstTimeLitleChronometer2 = 2;
     }
 
     public void stopChronometer2(){
-        millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
+        stopLilteChronometer2();
         ch2.stop();
-
-        if(firstTimeLitleChronometer2>0){
-            litle_millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2Litle.getBase();
-        }
-        firstTimeLitleChronometer2 = 1;
-
-        if(litle_millisegundos_ch2<=0){
-            ch2Litle.stop();
-            ch2Litle.setBase(SystemClock.elapsedRealtime());
-            usedTimeBonusChronometer2 = 0;
-        }else{
-            usedTimeBonusChronometer2 = 1;
-        }
+        firstTimeLitleChronometer1 = 2;
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
