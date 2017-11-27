@@ -14,7 +14,10 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.Toast;
 
+import java.util.concurrent.TimeUnit;
+
 import br.edu.ifspsaocarlos.sdm.trabalho.configuracoes.XadrezConfiguracoesActivity;
+import br.edu.ifspsaocarlos.sdm.trabalho.time.MinutesToMinutesToText;
 
 public class XadrezActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,21 +28,45 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
     private int firstTimeLitleChronometer2 = 0;
     private int bonusTimeInt = 0;
     private int pressChronometer = 0;
+    private int timeGameForPlayer = 0;
     private String setTimeLitleChronometer1 = "00:01";
     private String setTimeLitleChronometer2 = "00:01";
+    private String timeForPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xadrez);
 
-        haBonusTime();
+        loadSettings();
 
         ch1 = (Chronometer) findViewById(R.id.chronometer_player1);
         ch1.setOnClickListener(this);
 
         ch2 = (Chronometer) findViewById(R.id.chronometer_player2);
         ch2.setOnClickListener(this);
+
+        ch1.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            public void onChronometerTick(Chronometer chronometer) {
+                if (chronometer.getText().toString().equalsIgnoreCase(timeForPlayer)) {
+                    //Define here what happens when the Chronometer reaches the time above.
+                    chronometer.stop();
+                    Toast.makeText(getBaseContext(),"Terminou o tempo do jogador com as peças brancas.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        ch2.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+            public void onChronometerTick(Chronometer chronometer) {
+                if (chronometer.getText().toString().equalsIgnoreCase(timeForPlayer)) {
+                    //Define here what happens when the Chronometer reaches the time above.
+                    chronometer.stop();
+                    Toast.makeText(getBaseContext(),"Terminou o tempo do jogador com as peças pretas.",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
         ch2Litle = (Chronometer) findViewById(R.id.chronometer_player2_litle);
         ch2Litle.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
@@ -113,13 +140,29 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void haBonusTime(){
-        SharedPreferences prefs = this.getSharedPreferences("XadrezConfiguracoes", Context.MODE_PRIVATE);
-        String bonusTime = prefs.getString("bonus_segundos", null);
-        bonusTimeInt = Integer.parseInt(bonusTime);
+    public void loadSettings(){
+        try{
+            SharedPreferences prefs = this.getSharedPreferences("XadrezConfiguracoes", Context.MODE_PRIVATE);
+            String bonusTime = prefs.getString("bonus_segundos", null);
+            bonusTimeInt = Integer.parseInt(bonusTime);
+
+            String timeGame = prefs.getString("tempo_jogo", null);
+            timeGameForPlayer = Integer.parseInt(timeGame)/2;
+
+            MinutesToMinutesToText m = new MinutesToMinutesToText();
+            timeForPlayer = m.minutesToMinutesString(timeGameForPlayer);
+
+        }catch (Exception e){
+            SharedPreferences prefs = getSharedPreferences("XadrezConfiguracoes",0);
+            SharedPreferences.Editor editor = prefs.edit();
+            int thousandTimes = 0 * 1000;
+            editor.putString("bonus_segundos", String.valueOf(thousandTimes));
+            editor.apply();
+        }
     }
 
     public void bonusTimeLitleChronometer2(){
+        //pressionou o cronômetro 1
         ch1.setEnabled(false);
         ch2.setEnabled(true);
         if(bonusTimeInt!=0){
@@ -127,6 +170,7 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             ch2Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
             ch2Litle.start();
         }else{
+            //vai executar aqui quando não houver tempo bônus
             ch2Litle.setVisibility(View.INVISIBLE);
             ch1.stop();
 
@@ -137,24 +181,18 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             }else if(pressChronometer==1){
                 ch2.setBase(SystemClock.elapsedRealtime());
                 millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
-                Log.i("(1)millisegundos_ch1 ", String.valueOf(millisegundos_ch1));
                 ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
-
-               // millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
-               // ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
                 pressChronometer = 2;
             }else if(pressChronometer == 2){
-                //tem que arrumar essa bagunça....
-                Log.i("millisegundos_ch1 ", String.valueOf(millisegundos_ch1));
-                millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
+                millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
                 ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
             }
             ch2.start();
-            //firstTimeLitleChronometer2 = 1;
         }
     }
 
     public void bonusTimeLitleChronometer1(){
+        //pressionou o cronômetro 2
         ch1.setEnabled(true);
         ch2.setEnabled(false);
         if(bonusTimeInt!=0){
@@ -162,6 +200,7 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             ch1Litle.setBase(SystemClock.elapsedRealtime()+ bonusTimeInt);
             ch1Litle.start();
         }else{
+            //vai executar aqui quando não houver tempo bônus
             ch1Litle.setVisibility(View.INVISIBLE);
             ch2.stop();
 
@@ -172,20 +211,13 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
             }else if(pressChronometer==1){
                 ch1.setBase(SystemClock.elapsedRealtime());
                 millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
-                Log.i("(1)millisegundos_ch2 ", String.valueOf(millisegundos_ch2));
                 ch2.setBase(SystemClock.elapsedRealtime() - millisegundos_ch2);
-
-            //    millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
-            //    ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
-
                 pressChronometer=2;
             }else if(pressChronometer == 2){
-                Log.i("millisegundos_ch2 ", String.valueOf(millisegundos_ch2));
-                millisegundos_ch1 = SystemClock.elapsedRealtime() - ch1.getBase();
+                millisegundos_ch2 = SystemClock.elapsedRealtime() - ch2.getBase();
                 ch1.setBase(SystemClock.elapsedRealtime() - millisegundos_ch1);
             }
             ch1.start();
-            //firstTimeLitleChronometer1 = 1;
         }
     }
 

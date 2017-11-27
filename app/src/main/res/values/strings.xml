@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">Cronômetros para Jogos</string>
+    <string name="app_name">Recursos para Jogos</string>
+    <string name="chronometer">Cronômetro para Jogos</string>
+    <string name="dice">Dados para Jogos</string>
     <string name="configurações">Configurações</string>
 </resources>

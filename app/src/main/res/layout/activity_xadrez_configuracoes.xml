@@ -22,6 +22,21 @@
         android:textColor="@color/white"
         android:digits="0123456789"
         android:inputType="number"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24dp"
+        android:textColor="@color/white"
+        android:text="Tempo de Jogo (minutos)"/>
+
+    <EditText
+        android:id="@+id/tempo_jogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:digits="0123456789"
+        android:inputType="number"/>
     
     <Button
         android:id="@+id/btn_salvar_configuracoes"

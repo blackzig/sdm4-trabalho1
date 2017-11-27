@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
+    android:orientation="horizontal"
     tools:context="br.edu.ifspsaocarlos.sdm.trabalho.MainActivity">
 
     <Button
@@ -14,11 +15,26 @@
         android:background="@mipmap/icone_cronometro"
         android:padding="4dp"/>
 
+    <!--<Button
+        android:id="@+id/btn_cronometroRev"
+        android:layout_width="143dp"
+        android:layout_height="89dp"
+        android:background="@mipmap/icone_cronometro"
+        android:rotation="180"
+        android:padding="4dp"/>-->
+
     <Button
         android:id="@+id/btn_xadrez"
         android:layout_width="143dp"
         android:layout_height="89dp"
         android:background="@mipmap/xadrez"
+        android:padding="4dp"/>
+
+    <Button
+        android:id="@+id/btn_dice"
+        android:layout_width="143dp"
+        android:layout_height="89dp"
+        android:background="@mipmap/dice"
         android:padding="4dp"/>
 
 </LinearLayout>

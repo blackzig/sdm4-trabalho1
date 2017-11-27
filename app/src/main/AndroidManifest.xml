@@ -16,9 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".XadrezActivity" />
-        <activity android:name=".CronometroActivity" />
-        <activity android:name=".configuracoes.XadrezConfiguracoesActivity"></activity>
+        <activity android:name=".XadrezActivity" android:label="@string/chronometer" />
+        <activity android:name=".CronometroActivity" android:label="@string/chronometer" />
+        <activity android:name=".configuracoes.XadrezConfiguracoesActivity" android:label="@string/configurações" />
+        <activity android:name=".ChronometerReverseActivity" android:label="@string/chronometer" />
+        <activity android:name=".DiceActivity" android:label="@string/dice" />
     </application>
 
 </manifest>
