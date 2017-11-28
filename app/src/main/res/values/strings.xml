@@ -3,4 +3,16 @@
     <string name="chronometer">Cronômetro para Jogos</string>
     <string name="dice">Dados para Jogos</string>
     <string name="configurações">Configurações</string>
+
+    <string-array name="how_many_dices">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <string-array name="how_many_coins">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
