@@ -38,8 +38,6 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xadrez);
 
-        loadSettings();
-
         ch1 = (Chronometer) findViewById(R.id.chronometer_player1);
         ch1.setOnClickListener(this);
 
@@ -111,6 +109,12 @@ public class XadrezActivity extends AppCompatActivity implements View.OnClickLis
                 setTimeLitleChronometer1 = "00:00";
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadSettings();
     }
 
     public void stopLilteChronometer2(){
