@@ -35,7 +35,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:digits="0123456789"
+        android:digits="012468"
+
         android:inputType="number"/>
     
     <Button

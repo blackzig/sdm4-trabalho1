@@ -10,7 +10,7 @@ public class MinutesToMinutesToText {
         String minutesText = "00:00";
         if(i>=1 && i<=9){
             minutesText = "0"+String.valueOf(i)+":00";
-        }else if(i>=10 && i<=59){
+        }else if(i>=10 && i<=60){
             minutesText = String.valueOf(i)+":00";
         }
         return minutesText;

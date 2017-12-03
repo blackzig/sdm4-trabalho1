@@ -43,11 +43,32 @@ public class XadrezConfiguracoesActivity extends AppCompatActivity implements Vi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_salvar_configuracoes:
-                salvar();
+                Boolean tempoValido = verificarSeTempoDeJogoPassaDeDuasHoras();
+                if(tempoValido==true){
+                    salvar();
+                }else{
+                    String text = "Adicione um tempo de jogo entre 2 e 120 minutos";
+                    menssageSave(text);
+                }
                 break;
             default:
         }
     }
+
+    private Boolean verificarSeTempoDeJogoPassaDeDuasHoras(){
+        minutesForGame = Integer.parseInt(tempo_jogo.getText().toString());
+
+        if(minutesForGame<=1 || minutesForGame>120){
+            return false;
+        }else{
+            int ehPar = minutesForGame%2;
+            if(ehPar!=0){
+                minutesForGame+=1;
+            }
+            return true;
+        }
+    }
+
 
     public void salvar(){
         SharedPreferences prefs = getSharedPreferences("XadrezConfiguracoes",0);
@@ -56,11 +77,11 @@ public class XadrezConfiguracoesActivity extends AppCompatActivity implements Vi
         editor.putString("bonus_segundos", String.valueOf(thousandTimes));
         editor.apply();
 
-        minutesForGame = Integer.parseInt(tempo_jogo.getText().toString());
+       // minutesForGame = Integer.parseInt(tempo_jogo.getText().toString());
         editor.putString("tempo_jogo", String.valueOf(minutesForGame));
         editor.apply();
-
-        menssageSave();
+        String text = "Configuração salva";
+        menssageSave(text);
     }
 
     private void loadSettings(){
@@ -84,11 +105,9 @@ public class XadrezConfiguracoesActivity extends AppCompatActivity implements Vi
         }
     }
 
-    private void menssageSave(){
-        CharSequence text = "Configuração salva";
+    private void menssageSave(String mensagem){
         int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(this, text, duration);
+        Toast toast = Toast.makeText(this, mensagem, duration);
         toast.show();
         finish();
     }
